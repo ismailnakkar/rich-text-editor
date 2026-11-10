@@ -1,0 +1,85 @@
+/*
+ * Override on :root or any ancestor: :where() gives these no specificity. The border, radius and focus colour share
+ * names and defaults with @ismailnakkar/code-editor, so either stylesheet may load last.
+ */
+:where(:root) {
+    --editors-border: 1px solid #ced4da;
+    --editors-radius: .375rem;
+    --editors-focus-color: #2563eb;
+    --editors-rich-min-height: 12rem;
+    --editors-toolbar-background: #f8f9fa;
+    --editors-pressed-background: #dbe4ff;
+}
+
+.editors-rich {
+    border: var(--editors-border);
+    border-radius: var(--editors-radius);
+}
+
+/* Rings the frame only while the text has focus: a focused button draws its own. */
+.editors-rich:has(> .editors-rich-content:focus-visible) {
+    outline: 2px solid var(--editors-focus-color);
+    outline-offset: 2px;
+}
+
+.editors-rich-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    padding: .375rem;
+    border-block-end: var(--editors-border);
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    background: var(--editors-toolbar-background);
+}
+
+.editors-rich-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--editors-radius);
+    background: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.editors-rich-button:hover {
+    border-color: var(--editors-focus-color);
+}
+
+.editors-rich-button[aria-pressed="true"] {
+    border-color: var(--editors-focus-color);
+    background: var(--editors-pressed-background);
+    color: var(--editors-focus-color);
+}
+
+/* Offset clear of the pressed border. */
+.editors-rich-button:focus-visible {
+    outline: 2px solid var(--editors-focus-color);
+    outline-offset: 2px;
+}
+
+.editors-rich-content {
+    min-block-size: var(--editors-rich-min-height);
+    padding: .5rem .75rem;
+    text-align: start;
+    outline: 0;
+}
+
+.editors-rich-content p {
+    margin-block: 0 .5em;
+}
+
+.editors-rich-content li > p {
+    margin-block: 0;
+}
+
+/* Logical, so lists inset on the field's own start side. */
+.editors-rich-content :is(ul, ol) {
+    margin-block: 0 .5em;
+    padding-inline: 2em 0;
+}

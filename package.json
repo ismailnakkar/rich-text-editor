@@ -1,0 +1,62 @@
+{
+    "name": "@ismailnakkar/rich-text-editor",
+    "version": "1.0.0",
+    "description": "A Tiptap rich-text editor that takes a textarea's place and writes what laravel-safe-html stores, while the textarea stays the posted field.",
+    "keywords": [
+        "editor",
+        "textarea",
+        "tiptap",
+        "rich-text"
+    ],
+    "homepage": "https://github.com/ismailnakkar/rich-text-editor",
+    "bugs": {
+        "url": "https://github.com/ismailnakkar/rich-text-editor/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ismailnakkar/rich-text-editor.git"
+    },
+    "license": "MIT",
+    "author": {
+        "name": "Ismail Nakkar",
+        "email": "juge.steam@gmail.com"
+    },
+    "type": "module",
+    "main": "src/index.js",
+    "types": "src/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./src/index.d.ts",
+            "import": "./src/index.js"
+        },
+        "./style.css": {
+            "types": "./src/style.d.css.ts",
+            "default": "./src/style.css"
+        }
+    },
+    "files": [
+        "src"
+    ],
+    "publishConfig": {
+        "access": "public"
+    },
+    "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+    },
+    "scripts": {
+        "test": "vitest run",
+        "prepublishOnly": "vitest run"
+    },
+    "peerDependencies": {
+        "@tiptap/core": "^3.33.0",
+        "@tiptap/pm": "^3.33.0",
+        "@tiptap/starter-kit": "^3.33.0"
+    },
+    "devDependencies": {
+        "@tiptap/core": "^3.33.0",
+        "@tiptap/pm": "^3.33.0",
+        "@tiptap/starter-kit": "^3.33.0",
+        "happy-dom": "^21.0.4",
+        "vitest": "^5.1.0"
+    }
+}
