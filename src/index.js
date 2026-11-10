@@ -42,7 +42,9 @@ export function richTextEditor(textarea, {labels = {}} = {}) {
     editor.on('update', sync);
     host.prepend(toolbar(editor, wording));
 
-    const restore = takeOver(textarea, host, {focus: () => editor.view.focus(), sync});
+    // ProseMirror focuses only an editable view; a read-only one takes focus as a plain element.
+    const focus = () => (editor.isEditable ? editor.view.focus() : editor.view.dom.focus());
+    const restore = takeOver(textarea, host, {focus, sync});
 
     return {
         editor,

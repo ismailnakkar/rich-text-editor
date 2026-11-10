@@ -52,7 +52,7 @@
     cursor: pointer;
 }
 
-.editors-rich-button:hover {
+.editors-rich-button:hover:not(:disabled) {
     border-color: var(--editors-focus-color);
 }
 
@@ -60,6 +60,11 @@
     border-color: var(--editors-focus-color);
     background: var(--editors-pressed-background);
     color: var(--editors-focus-color);
+}
+
+.editors-rich-button:disabled {
+    cursor: default;
+    opacity: var(--editors-disabled-opacity);
 }
 
 /* Offset clear of the pressed border. */

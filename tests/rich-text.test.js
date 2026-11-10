@@ -214,6 +214,10 @@ describe('the fields', () => {
         expect(readOnly.view.dom.getAttribute('tabindex')).toBe('0');
         expect(document.querySelector('.editors-rich-button').disabled).toBe(true);
 
+        document.querySelector('label').click();
+
+        expect(document.activeElement).toBe(readOnly.view.dom);
+
         const disabled = mount('<p>text</p>', ' disabled').editor;
 
         expect(disabled.view.dom.getAttribute('contenteditable')).toBe('false');

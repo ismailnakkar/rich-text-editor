@@ -83,7 +83,7 @@ The shared ones have the same name in @ismailnakkar/code-editor, so an app using
 | `--editors-border` | `1px solid #ced4da` | The frame and the line under the toolbar | Yes |
 | `--editors-radius` | `.375rem` | The frame and the toolbar buttons | Yes |
 | `--editors-focus-color` | `#2563eb` | Focus rings, a hovered button's border, and a pressed button's border and icon | Yes |
-| `--editors-disabled-opacity` | `.6` | A disabled editor | Yes |
+| `--editors-disabled-opacity` | `.6` | A disabled editor and disabled toolbar buttons | Yes |
 | `--editors-rich-min-height` | `12rem` | The text | |
 | `--editors-toolbar-background` | `#f8f9fa` | The toolbar | |
 | `--editors-pressed-background` | `#dbe4ff` | A pressed button | |

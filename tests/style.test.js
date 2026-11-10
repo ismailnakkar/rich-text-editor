@@ -27,9 +27,14 @@ describe('style.css', () => {
     it('colours a hovered button\'s border, and a pressed one\'s border and icon, as the README says', () => {
         const focusColor = 'var(--editors-focus-color)';
 
-        expect(RULES.get('.editors-rich-button:hover')).toEqual({'border-color': focusColor});
+        expect(RULES.get('.editors-rich-button:hover:not(:disabled)')).toEqual({'border-color': focusColor});
         expect(RULES.get('.editors-rich-button[aria-pressed="true"]')).toMatchObject({'border-color': focusColor, color: focusColor});
         expect(readme).toContain('a hovered button\'s border, and a pressed button\'s border and icon');
+    });
+
+    it('dims a disabled button, which no longer looks clickable', () => {
+        expect(RULES.get('.editors-rich-button:disabled'))
+            .toEqual({cursor: 'default', opacity: 'var(--editors-disabled-opacity)'});
     });
 
     it('defaults, and documents, every custom property it reads, and defaults no other', () => {
