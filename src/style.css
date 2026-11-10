@@ -1,11 +1,12 @@
 /*
- * Override on :root or any ancestor: :where() gives these no specificity. The border, radius and focus colour share
- * names and defaults with @ismailnakkar/code-editor, so either stylesheet may load last.
+ * Override on :root or any ancestor: :where() gives these no specificity. The border, radius, focus colour and
+ * disabled opacity share names and defaults with @ismailnakkar/code-editor, so either stylesheet may load last.
  */
 :where(:root) {
     --editors-border: 1px solid #ced4da;
     --editors-radius: .375rem;
     --editors-focus-color: #2563eb;
+    --editors-disabled-opacity: .6;
     --editors-rich-min-height: 12rem;
     --editors-toolbar-background: #f8f9fa;
     --editors-pressed-background: #dbe4ff;
@@ -20,6 +21,10 @@
 .editors-rich:has(> .editors-rich-content:focus-visible) {
     outline: 2px solid var(--editors-focus-color);
     outline-offset: 2px;
+}
+
+.editors-rich:has(> .editors-rich-content[aria-disabled="true"]) {
+    opacity: var(--editors-disabled-opacity);
 }
 
 .editors-rich-toolbar {

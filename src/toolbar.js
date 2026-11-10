@@ -86,6 +86,8 @@ export function toolbar(editor, labels) {
         button.type = 'button';
         button.className = 'editors-rich-button';
         button.title = labels[label];
+        // Commands run whether or not the text is editable.
+        button.disabled = !editor.isEditable;
         button.setAttribute('aria-label', labels[label]);
         button.addEventListener('click', () => run(editor, labels));
         button.append(svgIcon(icon));

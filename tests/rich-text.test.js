@@ -196,6 +196,32 @@ describe('the fields', () => {
         expect(editor.view.dom.getAttribute('aria-required')).toBe('true');
     });
 
+    it('lifts required while it is the field, so an empty one does not block the submit unseen', () => {
+        const {textarea} = mount('', ' required');
+
+        expect(textarea.form.checkValidity()).toBe(true);
+
+        editors.pop().destroy();
+
+        expect(textarea.required).toBe(true);
+    });
+
+    it('is read-only for a readonly textarea and shut for a disabled one, toolbar included', () => {
+        const readOnly = mount('<p>text</p>', ' readonly').editor;
+
+        expect(readOnly.isEditable).toBe(false);
+        expect(readOnly.view.dom.getAttribute('aria-readonly')).toBe('true');
+        expect(readOnly.view.dom.getAttribute('tabindex')).toBe('0');
+        expect(document.querySelector('.editors-rich-button').disabled).toBe(true);
+
+        const disabled = mount('<p>text</p>', ' disabled').editor;
+
+        expect(disabled.view.dom.getAttribute('contenteditable')).toBe('false');
+        expect(disabled.view.dom.getAttribute('aria-disabled')).toBe('true');
+        expect(disabled.view.dom.hasAttribute('tabindex')).toBe(false);
+        expect(document.querySelector('.editors-rich-button').disabled).toBe(true);
+    });
+
     it('is named as a browser names the textarea: aria-labelledby, then aria-label, then its labels', () => {
         expect(mount('', ' aria-label="Body"').editor.view.dom.getAttribute('aria-label')).toBe('Body');
 
@@ -206,7 +232,7 @@ describe('the fields', () => {
     });
 
     it('follows a label that wraps the textarea, named by its text without the field or hidden markers', () => {
-        document.body.innerHTML = '<form><label>Content <span aria-hidden="true">*</span>'
+        document.body.innerHTML = '<form><label>Content <span aria-hidden="true">*</span><span hidden>hint</span>'
             + '<span class="sr-only">(required)</span><textarea name="content">&lt;p&gt;Hello&lt;/p&gt;</textarea></label></form>';
 
         const label = document.querySelector('label');
@@ -239,16 +265,19 @@ describe('the fields', () => {
         editor.commands.selectAll();
         editor.commands.toggleItalic();
         editors.pop().destroy();
+        const view = vi.spyOn(editor, 'view', 'get');
 
         expect(document.querySelector('.editors-rich')).toBeNull();
         expect(textarea.hidden).toBe(false);
         expect(textarea.value).toBe('<p><em>draft</em></p>');
 
+        // Its submit and label listeners are gone.
         textarea.value = 'typed';
         submit();
         document.querySelector('label').click();
 
         expect(textarea.value).toBe('typed');
+        expect(view).not.toHaveBeenCalled();
     });
 });
 

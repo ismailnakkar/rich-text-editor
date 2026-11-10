@@ -26,6 +26,7 @@ export function richTextEditor(textarea, {labels = {}} = {}) {
     // Stored markup is parsed into the schema, so it can't run handlers and loses what the schema lacks.
     const editor = new Editor({
         element: host,
+        editable: !(textarea.readOnly || textarea.matches(':disabled')),
         extensions: EXTENSIONS,
         enableInputRules: TOOLBAR_FORMATS,
         // Or a pasted URL becomes a link nobody made.

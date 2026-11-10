@@ -23,7 +23,7 @@ export function textboxAttributes(textarea) {
     const attributes = Object.fromEntries(Array.from(textarea.attributes)
         .filter(({name}) => name.startsWith('aria-'))
         .map(({name, value}) => [name, value]));
-    const label = Array.from(textarea.labels ?? [], labelText).filter(Boolean).join(' ');
+    const label = Array.from(textarea.labels, labelText).filter(Boolean).join(' ');
 
     // A browser names the textarea by its aria-labelledby, then its aria-label, then its labels.
     if (label && !('aria-labelledby' in attributes || 'aria-label' in attributes)) {
@@ -32,6 +32,14 @@ export function textboxAttributes(textarea) {
 
     if (textarea.required) {
         attributes['aria-required'] ??= 'true';
+    }
+
+    // A read-only textbox stays focusable, as the textarea is; a disabled one is neither focusable nor posted.
+    if (textarea.matches(':disabled')) {
+        attributes['aria-disabled'] = 'true';
+    } else if (textarea.readOnly) {
+        attributes['aria-readonly'] = 'true';
+        attributes.tabindex = '0';
     }
 
     if (textarea.dir) {
@@ -50,6 +58,7 @@ export function textboxAttributes(textarea) {
 /**
  * Hides the textarea and puts the editor after it, or after a label wrapping it (a label holds only phrasing content,
  * and would get every click in the editor). Its labels focus the editor, and a submit syncs its value once more.
+ * `required` is lifted meanwhile: hidden, the textarea can't show its message, so an empty one would block the submit.
  *
  * @param {HTMLTextAreaElement} textarea
  * @param {HTMLElement} editor
@@ -57,11 +66,12 @@ export function textboxAttributes(textarea) {
  * @return {() => void} gives the textarea its place back
  */
 export function takeOver(textarea, editor, {focus, sync}) {
-    const labels = Array.from(textarea.labels ?? []);
-    const form = textarea.form;
+    const labels = Array.from(textarea.labels);
+    const {form, required} = textarea;
 
     (textarea.closest('label') ?? textarea).after(editor);
     textarea.hidden = true;
+    textarea.required = false;
     labels.forEach((label) => label.addEventListener('click', focus));
     form?.addEventListener('submit', sync);
 
@@ -70,5 +80,6 @@ export function takeOver(textarea, editor, {focus, sync}) {
         form?.removeEventListener('submit', sync);
         editor.remove();
         textarea.hidden = false;
+        textarea.required = required;
     };
 }

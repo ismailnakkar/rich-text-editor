@@ -45,9 +45,17 @@ The editor goes after the textarea, or after a `<label>` that wraps it. Every ed
 on `submit`. An empty editor posts an empty string. The textarea's `dir` and `lang` carry over, so an Arabic field on a
 left-to-right page is typed right to left.
 
+The textarea's states are read once, when the editor is made:
+
+- `readonly` makes the text read-only, and still focusable. `disabled`, set on the textarea or on its `<fieldset>`,
+  makes it one that can't be focused or edited, since the form won't post it. Either one disables the toolbar.
+- `required` is lifted until `destroy()`: a hidden field can't show the browser's message, so an empty one would block
+  the submit without a word. Validate on the server.
+
+To follow a later change, `destroy()` the editor and call `richTextEditor()` again.
+
 > [!IMPORTANT]
-> The editor is not a sanitizer. Clean the posted HTML on the server (with laravel-safe-html) before printing it. A
-> hidden field can't show the browser's `required` message, so validate `required` on the server too.
+> The editor is not a sanitizer. Clean the posted HTML on the server (with laravel-safe-html) before printing it.
 
 ## Labels
 
@@ -75,6 +83,7 @@ The shared ones have the same name in @ismailnakkar/code-editor, so an app using
 | `--editors-border` | `1px solid #ced4da` | The frame and the line under the toolbar | Yes |
 | `--editors-radius` | `.375rem` | The frame and the toolbar buttons | Yes |
 | `--editors-focus-color` | `#2563eb` | Focus rings, a hovered button's border, and a pressed button's border and icon | Yes |
+| `--editors-disabled-opacity` | `.6` | A disabled editor | Yes |
 | `--editors-rich-min-height` | `12rem` | The text | |
 | `--editors-toolbar-background` | `#f8f9fa` | The toolbar | |
 | `--editors-pressed-background` | `#dbe4ff` | A pressed button | |
@@ -105,7 +114,8 @@ written and reloads unchanged.
 
 - The text has `role="textbox"` and `aria-multiline="true"`. It takes the textarea's `aria-*` attributes (so its
   `aria-describedby` hint or error and `aria-invalid` reach it), and `aria-required` when the textarea is `required`.
-  These are read once, when the editor is created.
+  These are read once, when the editor is created. A `readonly` textarea gives it `aria-readonly`, a disabled one
+  `aria-disabled`.
 - Without `aria-labelledby` or `aria-label`, the text is named by the textarea's labels, minus any `hidden` or
   `aria-hidden` content. Clicking a label focuses the text.
 - The toolbar has `role="toolbar"` and is named by `labels.toolbar`. Each button is a `<button type="button">` named by
@@ -125,4 +135,9 @@ Run this package's suite with `npm test`.
 
 ## Upgrading
 
-Nothing yet: 1.0.0 is the first release.
+### From 1.0
+
+- A `readonly` textarea now gives a read-only editor and a disabled one a disabled editor, toolbar included, dimmed by
+  `--editors-disabled-opacity`. Both are read once: a page that changes either later remakes the editor.
+- `required` is lifted while the editor stands in, so an empty field posts instead of silently blocking the submit.
+  Validate it on the server.
