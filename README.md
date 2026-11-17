@@ -89,7 +89,8 @@ The shared ones have the same name in @ismailnakkar/code-editor, so an app using
 | `--editors-pressed-background` | `#dbe4ff` | A pressed button | |
 
 For anything else, target `.editors-rich` (the frame), `.editors-rich-toolbar`, `.editors-rich-button` or
-`.editors-rich-content` (the text). The stylesheet uses logical properties only, so a right-to-left field mirrors.
+`.editors-rich-content` (the text). The stylesheet uses logical properties only, so a right-to-left field mirrors, and
+lists keep the browser's markers under a host reset that removes them.
 
 ## The HTML it writes
 

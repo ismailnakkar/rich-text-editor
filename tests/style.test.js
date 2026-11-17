@@ -50,6 +50,10 @@ describe('style.css', () => {
         }
     });
 
+    it('shows list markers even where the host\'s reset hides them', () => {
+        expect(RULES.get('.editors-rich-content :is(ul, ol)')['list-style-type']).toBe('revert');
+    });
+
     it('uses logical properties only, so a right-to-left field mirrors', () => {
         expect(RULES.size).toBeGreaterThan(0);
 

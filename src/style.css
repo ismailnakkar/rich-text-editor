@@ -88,8 +88,10 @@
     margin-block: 0;
 }
 
-/* Logical, so lists inset on the field's own start side. */
+/* Logical, so lists inset on the field's own start side. revert brings back the browser's markers, which a host's reset
+   (Tailwind's preflight, a bare ul { list-style: none }) removes. */
 .editors-rich-content :is(ul, ol) {
     margin-block: 0 .5em;
     padding-inline: 2em 0;
+    list-style-type: revert;
 }
