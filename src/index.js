@@ -29,7 +29,7 @@ export function richTextEditor(textarea, {labels = {}} = {}) {
         editable: !(textarea.readOnly || textarea.matches(':disabled')),
         extensions: EXTENSIONS,
         enableInputRules: TOOLBAR_FORMATS,
-        // Or a pasted URL becomes a link nobody made.
+        // Off, or a pasted URL becomes a link nobody made.
         enablePasteRules: false,
         content: textarea.value,
         editorProps: {attributes: {...textboxAttributes(textarea), class: 'editors-rich-content'}},

@@ -50,6 +50,18 @@ describe('style.css', () => {
         }
     });
 
+    it('names the shared properties --editors-* and its own --editors-rich-*', () => {
+        expect(Object.keys(RULES.get(':where(:root)'))).toEqual([
+            '--editors-border',
+            '--editors-radius',
+            '--editors-focus-color',
+            '--editors-disabled-opacity',
+            '--editors-rich-min-height',
+            '--editors-rich-toolbar-background',
+            '--editors-rich-pressed-background',
+        ]);
+    });
+
     it('shows list markers even where the host\'s reset hides them', () => {
         expect(RULES.get('.editors-rich-content :is(ul, ol)')['list-style-type']).toBe('revert');
     });

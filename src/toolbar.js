@@ -94,11 +94,11 @@ export function toolbar(editor, labels) {
         bar.append(button);
 
         if (format) {
-            formatButtons.push([button, format]);
+            formatButtons.push({button, format});
         }
     }
 
-    const refresh = () => formatButtons.forEach(([button, format]) => {
+    const refresh = () => formatButtons.forEach(({button, format}) => {
         button.setAttribute('aria-pressed', String(editor.isActive(format)));
     });
 

@@ -8,8 +8,8 @@
     --editors-focus-color: #2563eb;
     --editors-disabled-opacity: .6;
     --editors-rich-min-height: 12rem;
-    --editors-toolbar-background: #f8f9fa;
-    --editors-pressed-background: #dbe4ff;
+    --editors-rich-toolbar-background: #f8f9fa;
+    --editors-rich-pressed-background: #dbe4ff;
 }
 
 .editors-rich {
@@ -35,7 +35,7 @@
     border-block-end: var(--editors-border);
     border-start-start-radius: inherit;
     border-start-end-radius: inherit;
-    background: var(--editors-toolbar-background);
+    background: var(--editors-rich-toolbar-background);
 }
 
 .editors-rich-button {
@@ -58,7 +58,7 @@
 
 .editors-rich-button[aria-pressed="true"] {
     border-color: var(--editors-focus-color);
-    background: var(--editors-pressed-background);
+    background: var(--editors-rich-pressed-background);
     color: var(--editors-focus-color);
 }
 

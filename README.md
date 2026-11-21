@@ -1,10 +1,13 @@
 # @ismailnakkar/rich-text-editor
 
-A [Tiptap 3](https://tiptap.dev) rich-text editor that replaces a `<textarea>` and writes only the HTML
+A [Tiptap 3](https://tiptap.dev) rich-text editor that takes a `<textarea>`'s place and writes only the HTML
 [laravel-safe-html](https://github.com/ismailnakkar/laravel-safe-html) keeps. The textarea stays in the form, hidden,
-and holds the editor's HTML, so the form still posts it, works without JavaScript, and old input refills it.
+and holds the editor's HTML, so the form still posts it, the page works without JavaScript, and old input refills it.
 
 To edit HTML source instead, use [@ismailnakkar/code-editor](https://github.com/ismailnakkar/code-editor).
+
+> [!IMPORTANT]
+> The editor is not a sanitizer. Clean the posted HTML on the server (with laravel-safe-html) before printing it.
 
 ## Install
 
@@ -36,26 +39,31 @@ if (fields.length > 0) {
 }
 ```
 
-`richTextEditor(textarea, options?)` returns `{editor, destroy}`:
-
-- `editor` is the Tiptap `Editor`.
-- `destroy()` removes the editor and shows the textarea again, holding the last edit.
-
-The editor goes after the textarea, or after a `<label>` that wraps it. Every edit is written to the textarea, and again
-on `submit`. An empty editor posts an empty string. The textarea's `dir` and `lang` carry over, so an Arabic field on a
-left-to-right page is typed right to left.
+The editor goes after the textarea, or after a `<label>` that wraps it. Every edit is written into the textarea, and
+again on `submit`. An empty editor posts an empty string. The textarea's `dir` and `lang` carry over, so an Arabic
+field on a left-to-right page is typed right to left.
 
 The textarea's states are read once, when the editor is made:
 
-- `readonly` makes the text read-only, and still focusable. `disabled`, set on the textarea or on its `<fieldset>`,
-  makes it one that can't be focused or edited, since the form won't post it. Either one disables the toolbar.
+- `readonly` makes the text read-only, and still focusable. `disabled`, on the textarea or its `<fieldset>`, makes it
+  one that can't be focused or edited, since the form won't post it. Either one disables the toolbar.
 - `required` is lifted until `destroy()`: a hidden field can't show the browser's message, so an empty one would block
   the submit without a word. Validate on the server.
 
 To follow a later change, `destroy()` the editor and call `richTextEditor()` again.
 
-> [!IMPORTANT]
-> The editor is not a sanitizer. Clean the posted HTML on the server (with laravel-safe-html) before printing it.
+## API
+
+| Name | What it is |
+| --- | --- |
+| `richTextEditor(textarea, options?)` | Puts the editor in the textarea's place and returns a `RichTextEditor`. |
+| `options` | A `RichTextOptions`. Its one key, `labels`, holds the app's wording, merged over the English defaults; see [Labels](#labels). |
+| `RichTextEditor.editor` | Tiptap's `Editor`. To change the content from a script, use `editor.commands.setContent(html)`: a value set on the textarea is overwritten on submit. |
+| `RichTextEditor.destroy()` | Removes the editor and shows the textarea again, holding the last edit. |
+| `RichTextEditor` | The type of what `richTextEditor()` returns. |
+| `RichTextOptions` | The type of `options`. |
+| `Labels` | The type of the full set of labels. |
+| `@ismailnakkar/rich-text-editor/style.css` | The stylesheet. |
 
 ## Labels
 
@@ -76,7 +84,8 @@ To follow a later change, `destroy()` the editor and call `richTextEditor()` aga
 ## Styling
 
 Import `@ismailnakkar/rich-text-editor/style.css` once, then override these on `:root` or any ancestor of the field.
-The shared ones have the same name in @ismailnakkar/code-editor, so an app using both sets them once.
+The shared ones have the same name and default in @ismailnakkar/code-editor, so an app using both sets them once; this
+editor's own start with `--editors-rich-`.
 
 | Property | Default | Styles | Shared |
 | --- | --- | --- | --- |
@@ -85,8 +94,8 @@ The shared ones have the same name in @ismailnakkar/code-editor, so an app using
 | `--editors-focus-color` | `#2563eb` | Focus rings, a hovered button's border, and a pressed button's border and icon | Yes |
 | `--editors-disabled-opacity` | `.6` | A disabled editor and disabled toolbar buttons | Yes |
 | `--editors-rich-min-height` | `12rem` | The text | |
-| `--editors-toolbar-background` | `#f8f9fa` | The toolbar | |
-| `--editors-pressed-background` | `#dbe4ff` | A pressed button | |
+| `--editors-rich-toolbar-background` | `#f8f9fa` | The toolbar | |
+| `--editors-rich-pressed-background` | `#dbe4ff` | A pressed button | |
 
 For anything else, target `.editors-rich` (the frame), `.editors-rich-toolbar`, `.editors-rich-button` or
 `.editors-rich-content` (the text). The stylesheet uses logical properties only, so a right-to-left field mirrors, and
@@ -114,8 +123,8 @@ written and reloads unchanged.
 ## Accessibility
 
 - The text has `role="textbox"` and `aria-multiline="true"`. It takes the textarea's `aria-*` attributes (so its
-  `aria-describedby` hint or error and `aria-invalid` reach it), and `aria-required` when the textarea is `required`.
-  These are read once, when the editor is created. A `readonly` textarea gives it `aria-readonly`, a disabled one
+  `aria-describedby` hint or error and `aria-invalid` reach it), and `aria-required` when the textarea is `required`,
+  all read once, when the editor is made. A `readonly` textarea gives it `aria-readonly`, a disabled one
   `aria-disabled`.
 - Without `aria-labelledby` or `aria-label`, the text is named by the textarea's labels, minus any `hidden` or
   `aria-hidden` content. Clicking a label focuses the text.
@@ -135,6 +144,13 @@ Link button, stub `window.prompt` and `window.alert`.
 Run this package's suite with `npm test`.
 
 ## Upgrading
+
+### From 1.1
+
+- Two properties now start with `--editors-rich-`, like this editor's other own properties, and keep their defaults.
+  Rename them where the app sets them: the old names no longer apply.
+  - `--editors-toolbar-background` → `--editors-rich-toolbar-background`
+  - `--editors-pressed-background` → `--editors-rich-pressed-background`
 
 ### From 1.0
 
