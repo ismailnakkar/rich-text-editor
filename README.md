@@ -22,14 +22,14 @@ declarations are included.
 
 ```blade
 <label for="content">Content</label>
-<textarea id="content" name="content" class="rich-text">{{ old('content', $post->content) }}</textarea>
+<textarea id="content" name="content" data-rich-text-editor>{{ old('content', $post->content) }}</textarea>
 ```
 
 Tiptap weighs a few hundred kB, so load the editor only on pages that have a field. Pass your app's wording as
 `labels`:
 
 ```js
-const fields = document.querySelectorAll('textarea.rich-text');
+const fields = document.querySelectorAll('textarea[data-rich-text-editor]');
 
 if (fields.length > 0) {
     import('@ismailnakkar/rich-text-editor/style.css');

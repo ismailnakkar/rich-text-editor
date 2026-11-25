@@ -5,6 +5,7 @@ const SCHEMES = ['http', 'https', 'mailto'];
 const SCHEME = /^([^:/?#]*):/;
 
 /** The edge spaces and C0 controls laravel-safe-html trims first, as browsers do. */
+// oxlint-disable-next-line no-control-regex
 const EDGES = /^[\x00-\x20]+|[\x00-\x20]+$/g;
 
 /** How a relative answer to the prompt must start, so `www.example.com` isn't taken for a path on this site. */

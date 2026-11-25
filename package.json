@@ -1,6 +1,6 @@
 {
     "name": "@ismailnakkar/rich-text-editor",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "A Tiptap rich-text editor that takes a textarea's place and writes what laravel-safe-html stores, while the textarea stays the posted field.",
     "keywords": [
         "editor",
@@ -41,7 +41,7 @@
         "access": "public"
     },
     "scripts": {
-        "test": "vitest run",
+        "test": "oxlint --deny-warnings && vitest run",
         "prepublishOnly": "npm test"
     },
     "peerDependencies": {
@@ -54,6 +54,7 @@
         "@tiptap/pm": "^3.33.0",
         "@tiptap/starter-kit": "^3.33.0",
         "happy-dom": "^21.0.4",
+        "oxlint": "^1.95.0",
         "vitest": "^5.1.0"
     }
 }
